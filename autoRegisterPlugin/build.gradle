@@ -1,0 +1,51 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: "com.gradle.plugin-publish"
+
+dependencies {
+    //gradle sdk
+    compile gradleApi()
+    //groovy sdk
+    compile localGroovy()
+    compile 'com.android.tools.build:gradle:2.3.0'
+    compile 'org.javassist:javassist:3.25.0-GA'
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.gradle.publish:plugin-publish-plugin:0.9.7"
+    }
+}
+
+/**定义工件的group、name 和 version*/
+group = 'com.liwg.eventbus.autoregister'
+archivesBaseName = 'eventbus-autoregister'
+version = '1.0.0'
+
+
+pluginBundle {
+    website = 'https://juejin.im/post/5d8adf5d518825091e0fd999'
+    vcsUrl = 'https://github.com/lwugang/EventBusAutoRegister'
+    description = '利用Gradle插件实现 EventBus 自动在Activity/Fragment/View中注册'  //插件描述
+    tags = ['EventBus', 'Gradle',"javassist"]  //插件的tag。可以通过这个在插件门户上搜索
+
+    plugins {
+        greetingsPlugin {
+            id = "com.eventbus.autoregister"   //插件的id，到时候apply的插件id
+            displayName = "Eventbus-AutoRegister"
+        }
+    }
+}
+
+uploadArchives{ //当前项目可以发布到本地文件夹中
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo')) //定义本地maven仓库的地址
+        }
+    }
+}
